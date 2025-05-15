@@ -4,9 +4,16 @@ on:
 
 jobs:
   build:
+    name: Matrix ${{matrix.var}}
+    strategy:
+      matrix:
+        var: [1,2,3,4]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+
+    - name: Matrix test
+      run: echo "Hello from matrix number:${{ matrix.var }}"
 
     - name: Set up C++ CMake
       run: sudo apt-get install -y gcc cmake
