@@ -25,10 +25,9 @@ jobs:
       run: |
         mkdir artifacts
         if [ ${{ matrix.name }} = "win64" ]; then
-          mv Homie.exe "artifacts/Homie_${{ matrix.name }}.exe"
-        else
-          mv Homie "artifacts/Homie_${{ matrix.name }}"
+          suff=.exe
         fi
+        mv build/Homie$suff "artifacts/Homie_${{ matrix.name }}$suff"
 
     - name: Archive Homie${{ matrix.var }}
       uses: actions/upload-artifact@v4
