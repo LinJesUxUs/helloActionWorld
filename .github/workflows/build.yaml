@@ -24,9 +24,11 @@ jobs:
     - name: Rename artifacts
       run: |
         mkdir artifacts
-        if [ ${{ matrix.name }} -eq "win64" ]
+        if [ ${{ matrix.name }} = "win64" ]; then
           mv Homie.exe "artifacts/Homie_${{ matrix.name }}.exe"
-        mv Homie "artifacts/Homie_${{ matrix.name }}"
+        else
+          mv Homie "artifacts/Homie_${{ matrix.name }}"
+        fi
 
     - name: Archive Homie${{ matrix.var }}
       uses: actions/upload-artifact@v4
