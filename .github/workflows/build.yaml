@@ -7,11 +7,11 @@ jobs:
     name: Matrix ${{matrix.var}}
     strategy:
       matrix:
-        - name: linux_x64
+        name: linux_x64
           os: ubuntu-latest
-        - name: linux_arm64
+        name: linux_arm64
           os: ubuntu-24.04-arm
-        - name: win64
+        name: win64
           os: windows-latest
     runs-on: ${{ matrix.os }}
     steps:
