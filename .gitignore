@@ -5,3 +5,8 @@ Makefile
 cmake_install.cmake
 CMakeLists.txt.user
 qtcsettings.cmake
+.cmake/
+.qtc/
+.qtc_clangd/
+CMakeCache.txt.prev
+Testing/
