@@ -7,32 +7,30 @@ jobs:
     name: Matrix ${{matrix.var}}
     strategy:
       matrix:
-        var: [1,2,3,4]
-    runs-on: ubuntu-latest
+        - name: linux_x64
+          os: ubuntu-latest
+        - name: linux_arm64
+          os: ubuntu-24.04-arm
+        - name: win64
+          os: windows-latest
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
 
-    - name: Matrix test
-      run: echo "Hello from matrix number:${{ matrix.var }}"
-
-    - name: Set up C++ CMake
-      run: sudo apt-get install -y gcc cmake
-
-    - name: Build
-      run: cmake . && make
-
-    - name: Run
-      run: ./Homie
+    - name: Build ${{ matrix.name }}
+      uses: nicledomaS/cmake_build_action@v1.4
 
     - name: Rename artifacts
       run: |
         mkdir artifacts
-        mv Homie "artifacts/Homie${{ matrix.var }}"
+        if [ ${{ matrix.name }} -eq "win64" ]
+          mv Homie.exe "artifacts/Homie_${{ matrix.name }}.exe"
+        mv Homie "artifacts/Homie_${{ matrix.name }}"
 
     - name: Archive Homie${{ matrix.var }}
       uses: actions/upload-artifact@v4
       with:
-        name: Homie${{ matrix.var }}
+        name: Homie_${{ matrix.name }}*
         path: artifacts
 
   merge:
@@ -45,4 +43,4 @@ jobs:
         with:
           name: archive
           pattern: Homie*
-          delete-merged: true
+          #delete-merged: true
