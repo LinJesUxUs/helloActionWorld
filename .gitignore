@@ -10,3 +10,4 @@ qtcsettings.cmake
 .qtc_clangd/
 CMakeCache.txt.prev
 Testing/
+build/
