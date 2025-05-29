@@ -15,6 +15,7 @@ jobs:
           - name: win64
             os: windows-latest
             suff: .exe
+            build_path: Release/
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -25,7 +26,7 @@ jobs:
     - name: Rename artifacts
       run: |
         mkdir artifacts
-        mv build/Homie${{matrix.suff}} artifacts/Homie_${{ matrix.name }}${{matrix.suff}}
+        mv build/${{matrix.build_path}}Homie${{matrix.suff}} artifacts/Homie_${{ matrix.name }}${{matrix.suff}}
 
     - name: Archive Homie_${{ matrix.name }}
       uses: actions/upload-artifact@v4
