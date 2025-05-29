@@ -36,6 +36,8 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     needs: build
     name: Tag & Release
     steps:
@@ -47,11 +49,10 @@ jobs:
           pattern: Homie*
           #delete-merged: true
       - name: Tagging version of release
-        uses: phish108/autotag-action@v1.1.64
+        uses: anothrNick/github-tag-action@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN}}
-          branch: main
-          with-v: true
+          GITHUB-TOKEN: ${{ secrets.GITHUB_TOKEN}}
+          TAG_PREFIX: v
       # - name: Create Release
         # uses: softprops/action-gh-release@v2
         # if: startsWith(github.ref, 'refs/tags/v')
