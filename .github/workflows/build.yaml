@@ -46,8 +46,6 @@ jobs:
           name: archive
           pattern: Homie*
           #delete-merged: true
-      - name: Test fail
-        run: exit 1
       - name: Tagging version of release
         uses: phish108/autotag-action@v1.1.55
         with:
