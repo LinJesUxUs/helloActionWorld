@@ -47,7 +47,7 @@ jobs:
         with:
           name: archive
           pattern: Homie*
-          #delete-merged: true
+          delete-merged: false
       - name: Tagging version of release
         uses: anothrNick/github-tag-action@v1
         env:
