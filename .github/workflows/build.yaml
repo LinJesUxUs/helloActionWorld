@@ -53,7 +53,7 @@ jobs:
       - name: Tagging version of release
         uses: anothrNick/github-tag-action@v1
         env:
-          GITHUB-TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_PREFIX: v
           VERBOSE: true
       # - name: Create Release
