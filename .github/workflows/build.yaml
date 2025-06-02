@@ -10,12 +10,12 @@ jobs:
         include:
           - name: linux_x64
             os: ubuntu-latest
-#          - name: linux_arm64
-#            os: ubuntu-24.04-arm
-#          - name: win64
-#            os: windows-latest
-#            suff: .exe
-#            build_path: Release/
+          - name: linux_arm64
+            os: ubuntu-24.04-arm
+          - name: win64
+            os: windows-latest
+            suff: .exe
+            build_path: Release/
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
