@@ -51,24 +51,31 @@ jobs:
           pattern: Homie*
           delete-merged: false
       - name: Save previous latest tag
-        run: pretag=$( git tag| tail -n 1)
+        id: save_previous_tag
+        run: |
+          pretag=$(git tag | tail -n 1)
+          echo "::set-output name=pretag::$pretag"
       - name: Tagging version of release
         uses: anothrNick/github-tag-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_PREFIX: v
-      - name: Save previous latest tag
-        run: postag=$( git tag| tail -n 1)
+      - name: Save latest tag
+        id: save_latest_tag
+        run: |
+          postag=$(git tag | tail -n 1)
+          echo "::set-output name=postag::$postag"
       - name: Compare tags
         run: |
-          if [ $pretag = $postag ]
-          then
+          pretag=${{ steps.save_previous_tag.outputs.pretag }}
+          postag=${{ steps.save_latest_tag.outputs.postag }}
+          if [[ "$pretag" == "$postag" ]]; then
             echo "Tag isn't updated"
           else
             echo "Tag is updated"
           fi
           echo "pretag=$pretag postag=$postag"
-          git tag| tail -n 2
+          git tag | tail -n 2
       # - name: Create Release
         # uses: softprops/action-gh-release@v2
         # if: startsWith(github.ref, 'refs/tags/v')
