@@ -67,6 +67,8 @@ jobs:
           else
             echo "Tag is updated"
           fi
+          echo "pretag=$pretag postag=$postag"
+          git tag| tail -n 2
       # - name: Create Release
         # uses: softprops/action-gh-release@v2
         # if: startsWith(github.ref, 'refs/tags/v')
