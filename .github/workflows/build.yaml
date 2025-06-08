@@ -39,7 +39,7 @@ jobs:
     permissions:
       contents: write
     needs: build
-    name: Tag & Release
+    name: Tag
     outputs:
       pretag: ${{ steps.previous_tag.outputs.tag }}
       postag: ${{ steps.post_tag.outputs.tag }}
@@ -68,6 +68,13 @@ jobs:
         run: |
           echo "tag=$(git tag | tail -n 1)" >> "$GITHUB_OUTPUT"
           echo "tag=$(git tag | tail -n 1)"
+  release:
+    runs-on: ubuntu-latest
+#    permissions:
+#      contents: write
+    needs: deploy
+    name: Release
+    steps:
       - name: Compare tags
         env:
           PRETAG: ${{ needs.deploy.outputs.pretag }}
