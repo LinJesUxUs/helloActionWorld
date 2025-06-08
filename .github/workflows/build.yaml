@@ -66,8 +66,8 @@ jobs:
         run: echo "tag=$(git tag | tail -n 1)"
       - name: Compare tags
         env:
-          PRETAG: ${{ outputs.pretag }}
-          POSTAG: ${{ outputs.postag }}
+          PRETAG: ${{ needs.deploy.outputs.pretag }}
+          POSTAG: ${{ needs.deploy.outputs.postag }}
         run: |
           if [[ "$PRETAG" == "$POSTAG" ]]; then
             echo "Tag isn't updated"
