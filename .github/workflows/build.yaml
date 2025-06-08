@@ -2,6 +2,10 @@ name: Builds the Homie
 on:
   push:
 
+env:
+  test_env1: ""
+  test_env2: ""
+
 jobs:
   build:
     name: Matrix ${{matrix.name}}
@@ -55,7 +59,10 @@ jobs:
           delete-merged: false
       - id: previous_tag
         name: Save previous latest tag
-        run: echo "tag=$(git tag | tail -n 1)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "tag=$(git tag | tail -n 1)" >> "$GITHUB_OUTPUT"
+          test_env1=$(git tag | tail -n 1)
+          echo "test_env1=$test_env1"
       - name: Tagging version of release
         uses: anothrNick/github-tag-action@v1
         env:
@@ -64,7 +71,11 @@ jobs:
           DEFAULT_BUMP: none
       - id: post_tag
         name: Save post latest tag
-        run: echo "tag=$(git tag | tail -n 1)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "tag=$(git tag | tail -n 1)" >> "$GITHUB_OUTPUT"
+          test_env2=$(git tag | tail -n 1)
+          echo "test_env1=$test_env1"
+          echo "test_env2=$test_env2"
   release:
     runs-on: ubuntu-latest
 #    permissions:
@@ -84,6 +95,9 @@ jobs:
           fi
           echo "pretag=$PRETAG postag=$POSTAG"
           git tag | tail -n 2
-      # - name: Create Release
-        # uses: softprops/action-gh-release@v2
-        # if: startsWith(github.ref, 'refs/tags/v')
+          echo "test_env1=$test_env1"
+          echo "test_env2=$test_env2"
+      - name: Create Release
+#        uses: softprops/action-gh-release@v2
+        if: ${{ ! needs.deploy.outputs.pretag == needs.deploy.outputs.postag }}
+        run: echo "Release creation..."
