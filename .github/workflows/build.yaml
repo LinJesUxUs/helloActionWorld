@@ -14,12 +14,12 @@ jobs:
         include:
           - name: linux_x64
             os: ubuntu-latest
-          - name: linux_arm64
-            os: ubuntu-24.04-arm
-          - name: win64
-            os: windows-latest
-            suff: .exe
-            build_path: Release/
+#          - name: linux_arm64
+#            os: ubuntu-24.04-arm
+#          - name: win64
+#            os: windows-latest
+#            suff: .exe
+#            build_path: Release/
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -61,7 +61,7 @@ jobs:
         name: Save previous latest tag
         run: |
           echo "tag=$(git tag | tail -n 1)" >> "$GITHUB_OUTPUT"
-          git tag | tail -n 1 >> ${{test_env1}}
+          git tag | tail -n 1 >> ${{env.test_env1}}
           echo "test_env1=$test_env1"
       - name: Tagging version of release
         uses: anothrNick/github-tag-action@v1
@@ -73,7 +73,7 @@ jobs:
         name: Save post latest tag
         run: |
           echo "tag=$(git tag | tail -n 1)" >> "$GITHUB_OUTPUT"
-          git tag | tail -n 1 >> ${{test_env2}}
+          git tag | tail -n 1 >> ${{env.test_env2}}
           echo "test_env1=$test_env1"
           echo "test_env2=$test_env2"
   release:
