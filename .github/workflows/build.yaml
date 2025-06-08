@@ -55,9 +55,7 @@ jobs:
           delete-merged: false
       - id: previous_tag
         name: Save previous latest tag
-        run: |
-          echo "tag=$(git tag | tail -n 1)" >> "$GITHUB_OUTPUT"
-          echo "tag=$(git tag | tail -n 1)"
+        run: echo "tag=$(git tag | tail -n 1)" >> "$GITHUB_OUTPUT"
       - name: Tagging version of release
         uses: anothrNick/github-tag-action@v1
         env:
@@ -65,9 +63,7 @@ jobs:
           TAG_PREFIX: v
       - id: post_tag
         name: Save post latest tag
-        run: |
-          echo "tag=$(git tag | tail -n 1)" >> "$GITHUB_OUTPUT"
-          echo "tag=$(git tag | tail -n 1)"
+        run: echo "tag=$(git tag | tail -n 1)" >> "$GITHUB_OUTPUT"
   release:
     runs-on: ubuntu-latest
 #    permissions:
