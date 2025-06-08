@@ -53,17 +53,21 @@ jobs:
           name: archive
           pattern: Homie*
           delete-merged: false
-      - name: Save previous latest tag
-        id: previous_tag
-        run: echo "tag=$(git tag | tail -n 1)" >> "$GITHUB_OUTPUT"
+      - id: previous_tag
+        name: Save previous latest tag
+        run: |
+          echo "tag=$(git tag | tail -n 1)" >> "$GITHUB_OUTPUT"
+          echo "tag=$(git tag | tail -n 1)"
       - name: Tagging version of release
         uses: anothrNick/github-tag-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_PREFIX: v
-      - name: Save post latest tag
-        id: post_tag
-        run: echo "tag=$(git tag | tail -n 1)" >> "$GITHUB_OUTPUT"
+      - id: post_tag
+        name: Save post latest tag
+        run: |
+          echo "tag=$(git tag | tail -n 1)" >> "$GITHUB_OUTPUT"
+          echo "tag=$(git tag | tail -n 1)"
       - name: Compare tags
         env:
           PRETAG: ${{ needs.deploy.outputs.pretag }}
