@@ -55,7 +55,7 @@ jobs:
           delete-merged: false
       - name: Save previous latest tag
         id: previous_tag
-        run: echo "tag=$(git tag | tail -n 1)" >> "$GITGUB_OUTPUT"
+        run: echo "tag=$(git tag | tail -n 1)" >> "$GITHUB_OUTPUT"
       - name: Tagging version of release
         uses: anothrNick/github-tag-action@v1
         env:
@@ -63,7 +63,7 @@ jobs:
           TAG_PREFIX: v
       - name: Save post latest tag
         id: post_tag
-        run: echo "tag=$(git tag | tail -n 1)" >> "$GITGUB_OUTPUT"
+        run: echo "tag=$(git tag | tail -n 1)" >> "$GITHUB_OUTPUT"
       - name: Compare tags
         env:
           PRETAG: ${{ needs.deploy.outputs.pretag }}
