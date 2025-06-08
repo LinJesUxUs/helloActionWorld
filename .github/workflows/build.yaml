@@ -72,6 +72,7 @@ jobs:
     needs: deploy
     name: Release
     steps:
+      - uses: actions/checkout@v4
       - name: Compare tags
         env:
           PRETAG: ${{ needs.deploy.outputs.pretag }}
@@ -86,5 +87,5 @@ jobs:
           git tag | tail -n 2
       - name: Create Release
 #        uses: softprops/action-gh-release@v2
-        if: ${{ ! needs.deploy.outputs.pretag == needs.deploy.outputs.postag }}
+        if: ${{ needs.deploy.outputs.pretag != needs.deploy.outputs.postag }}
         run: echo "Release creation..."
