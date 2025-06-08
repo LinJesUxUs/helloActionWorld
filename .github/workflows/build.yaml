@@ -40,6 +40,9 @@ jobs:
       contents: write
     needs: build
     name: Tag & Release
+    outputs:
+      pretag: ${{ steps.previous_tag.outputs.tag }}
+      postag: ${{ steps.post_tag.outputs.tag }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -51,30 +54,27 @@ jobs:
           pattern: Homie*
           delete-merged: false
       - name: Save previous latest tag
-        id: save_previous_tag
-        run: |
-          pretag=$(git tag | tail -n 1)
-          echo "::set-output name=pretag::$pretag"
+        id: previous_tag
+        run: echo "tag=$(git tag | tail -n 1)"
       - name: Tagging version of release
         uses: anothrNick/github-tag-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_PREFIX: v
-      - name: Save latest tag
-        id: save_latest_tag
-        run: |
-          postag=$(git tag | tail -n 1)
-          echo "::set-output name=postag::$postag"
+      - name: Save post latest tag
+        id: post_tag
+        run: echo "tag=$(git tag | tail -n 1)"
       - name: Compare tags
+        env:
+          PRETAG: ${{ outputs.pretag }}
+          POSTAG: ${{ outputs.postag }}
         run: |
-          pretag=${{ steps.save_previous_tag.outputs.pretag }}
-          postag=${{ steps.save_latest_tag.outputs.postag }}
-          if [[ "$pretag" == "$postag" ]]; then
+          if [[ "$PRETAG" == "$POSTAG" ]]; then
             echo "Tag isn't updated"
           else
             echo "Tag is updated"
           fi
-          echo "pretag=$pretag postag=$postag"
+          echo "pretag=$PRETAG postag=$POSTAG"
           git tag | tail -n 2
       # - name: Create Release
         # uses: softprops/action-gh-release@v2
