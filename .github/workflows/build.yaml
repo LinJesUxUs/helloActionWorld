@@ -55,7 +55,7 @@ jobs:
           delete-merged: false
       - id: previous_tag
         name: Save previous latest tag
-        run: echo "tag=$(git tag | tail -n 1)" >> "$GITHUB_OUTPUT"
+        run: echo "tag=$(git tag --sort=-v:refname | head -n 1)" >> "$GITHUB_OUTPUT"
       - name: Tagging version of release
         uses: anothrNick/github-tag-action@v1
         env:
@@ -64,7 +64,7 @@ jobs:
           DEFAULT_BUMP: none
       - id: post_tag
         name: Save post latest tag
-        run: echo "tag=$(git tag | tail -n 1)" >> "$GITHUB_OUTPUT"
+        run: echo "tag=$(git tag --sort=-v:refname | head -n 1)" >> "$GITHUB_OUTPUT"
   release:
     runs-on: ubuntu-latest
 #    permissions:
@@ -84,7 +84,7 @@ jobs:
             echo "Tag is updated"
           fi
           echo "pretag=$PRETAG postag=$POSTAG"
-          git tag | tail -n 2
+          git tag --sort=-v:refname | head -n 2
       - name: Create Release
         if: env.PRETAG != env.POSTAG
         uses: softprops/action-gh-release@v2
