@@ -47,28 +47,31 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
+
       - name: Merge Artifacts
         uses: actions/upload-artifact/merge@v4
         with:
           name: archive
           pattern: Homie*
           delete-merged: false
+
       - id: previous_tag
         name: Save previous latest tag
         run: echo "tag=$(git tag --sort=-v:refname | head -n 1)" >> "$GITHUB_OUTPUT"
+
       - name: Tagging version of release
         uses: anothrNick/github-tag-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_PREFIX: v
           DEFAULT_BUMP: none
+
       - id: post_tag
         name: Save post latest tag
         run: echo "tag=$(git tag --sort=-v:refname | head -n 1)" >> "$GITHUB_OUTPUT"
+
   release:
     runs-on: ubuntu-latest
-#    permissions:
-#      contents: write
     needs: deploy
     name: Release
     env:
@@ -76,6 +79,7 @@ jobs:
       POSTAG: ${{ needs.deploy.outputs.postag }}
     steps:
       - uses: actions/checkout@v4
+
       - name: Compare tags
         run: |
           if [[ "$PRETAG" == "$POSTAG" ]]; then
@@ -85,9 +89,10 @@ jobs:
           fi
           echo "pretag=$PRETAG postag=$POSTAG"
           git tag --sort=-v:refname | head -n 2
+
       - name: Create Release
         if: env.PRETAG != env.POSTAG
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.POSTAG }}
-#        run: echo "Release creation..."
+
