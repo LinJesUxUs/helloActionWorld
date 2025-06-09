@@ -89,14 +89,11 @@ jobs:
           fi
           echo "pretag=$PRETAG postag=$POSTAG"
           git tag --sort=-v:refname | head -n 2
-          ls -lh
-          if [ -f artifact ]; then
-            ls -lh artifact
-          fi
 
       - uses: actions/download-artifact@v4
         with:
           path: artifact
+          merge-multiple: true
 
       - name: Print artifacts dir tree
         run: tree artifact
@@ -106,4 +103,4 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.POSTAG }}
-          files: artifact
+          files: artifact/*
