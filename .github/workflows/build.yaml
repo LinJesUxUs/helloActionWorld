@@ -88,4 +88,6 @@ jobs:
       - name: Create Release
         if: env.PRETAG != env.POSTAG
         uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.POSTAG }}
 #        run: echo "Release creation..."
