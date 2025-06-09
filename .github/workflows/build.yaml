@@ -71,12 +71,12 @@ jobs:
 #      contents: write
     needs: deploy
     name: Release
+    env:
+      PRETAG: ${{ needs.deploy.outputs.pretag }}
+      POSTAG: ${{ needs.deploy.outputs.postag }}
     steps:
       - uses: actions/checkout@v4
       - name: Compare tags
-        env:
-          PRETAG: ${{ needs.deploy.outputs.pretag }}
-          POSTAG: ${{ needs.deploy.outputs.postag }}
         run: |
           if [[ "$PRETAG" == "$POSTAG" ]]; then
             echo "Tag isn't updated"
@@ -86,6 +86,6 @@ jobs:
           echo "pretag=$PRETAG postag=$POSTAG"
           git tag | tail -n 2
       - name: Create Release
+        if: env.PRETAG != env.POSTAG
         uses: softprops/action-gh-release@v2
-        if: ${{ needs.deploy.outputs.pretag != needs.deploy.outputs.postag }}
 #        run: echo "Release creation..."
