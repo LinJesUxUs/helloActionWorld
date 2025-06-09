@@ -86,6 +86,6 @@ jobs:
           echo "pretag=$PRETAG postag=$POSTAG"
           git tag | tail -n 2
       - name: Create Release
-#        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v2
         if: ${{ needs.deploy.outputs.pretag != needs.deploy.outputs.postag }}
         run: echo "Release creation..."
