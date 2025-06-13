@@ -80,9 +80,15 @@ jobs:
           path: artifact
           merge-multiple: true
 
+      - name: Generate Changelog
+        run: |
+          echo "## Changelog" > CHANGELOG.md
+          git log -$(git rev-list --count ${env.PRETAG}..${env.POSTAG}) --pretty=format:"- [%B](commit/%h)"  >> CHANGELOG.md
+
       - name: Create Release
         if: env.PRETAG != env.POSTAG
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.POSTAG }}
           files: artifact/*
+          body_path: CHANGELOG.md
