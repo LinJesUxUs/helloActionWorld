@@ -83,7 +83,7 @@ jobs:
       - name: Generate Changelog
         run: |
           echo "## Changelog" > CHANGELOG.md
-          git log -$(git rev-list --count ${env.PRETAG}..${env.POSTAG}) --pretty=format:"- [%B](commit/%h)"  >> CHANGELOG.md
+          git log -$(git rev-list --count $PRETAG..$POSTAG) --pretty=format:"- [%B](commit/%h)"  >> CHANGELOG.md
 
       - name: Create Release
         if: env.PRETAG != env.POSTAG
