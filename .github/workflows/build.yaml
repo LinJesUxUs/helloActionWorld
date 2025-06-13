@@ -78,9 +78,6 @@ jobs:
           path: artifact
           merge-multiple: true
 
-      - name: Print artifacts dir tree
-        run: tree artifact
-
       - name: Create Release
         if: env.PRETAG != env.POSTAG
         uses: softprops/action-gh-release@v2
