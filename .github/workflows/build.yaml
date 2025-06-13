@@ -48,13 +48,6 @@ jobs:
         with:
           fetch-depth: '0'
 
-      - name: Merge Artifacts
-        uses: actions/upload-artifact/merge@v4
-        with:
-          name: archive
-          pattern: Homie*
-          delete-merged: false
-
       - id: previous_tag
         name: Save previous latest tag
         run: echo "tag=$(git tag --sort=-v:refname | head -n 1)" >> "$GITHUB_OUTPUT"
