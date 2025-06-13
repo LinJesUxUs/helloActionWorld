@@ -73,16 +73,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Compare tags
-        run: |
-          if [[ "$PRETAG" == "$POSTAG" ]]; then
-            echo "Tag isn't updated"
-          else
-            echo "Tag is updated"
-          fi
-          echo "pretag=$PRETAG postag=$POSTAG"
-          git tag --sort=-v:refname | head -n 2
-
       - uses: actions/download-artifact@v4
         with:
           path: artifact
